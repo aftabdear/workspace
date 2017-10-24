@@ -32,12 +32,20 @@ public class Main extends Script implements MessageListener {
 	@Override
 	public void onStart() {
 		
-		getExperienceTracker().initializeModule();
+		getExperienceTracker().start(Skill.RANGED);
 
 		//int rangexp =getExperienceTracker().getGainedXPPerHour(Skill.RANGED);
 		startTime = System.currentTimeMillis();
 
 		tasks.add(new AttackingOgres(this));
+		tasks.add(new WalkToGE(this));
+		tasks.add(new WalkToOgres(this));
+		tasks.add(new NoDarts(this));
+		tasks.add(new NoPots(this));
+		tasks.add(new NoCannonballs(this));
+		tasks.add(new NoVarrockTablet(this));
+		tasks.add(new NoArdyTablet(this));
+		
 		
 	}
 
@@ -93,7 +101,7 @@ public class Main extends Script implements MessageListener {
 		g.setColor(Color.CYAN);
 		g.drawString("Aftabdear's Automated", 20, 150);
 		g.drawString("Xp per hour: " +  String.valueOf(getExperienceTracker().getGainedXPPerHour(Skill.RANGED)) , 20, 165);
-	
+		g.drawString("TTL: " +  String.valueOf(getExperienceTracker().getTimeToLevel(Skill.RANGED)) , 20, 180);
 		g.drawString("Time Ran (Minutes) : " + (int) ((System.currentTimeMillis() - this.startTime) / 60000), 20, 300);
 		g.drawRect(15, 135, 200, 180);
 

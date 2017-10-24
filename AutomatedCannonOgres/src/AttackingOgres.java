@@ -2,11 +2,13 @@ import org.osbot.rs07.api.Configs;
 import org.osbot.rs07.api.Players;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Item;
+import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.model.Player;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
+import org.osbot.rs07.utility.ConditionalSleep;
 
 public class AttackingOgres extends Task {
 
@@ -18,7 +20,12 @@ public class AttackingOgres extends Task {
 	@Override
 	public boolean verify() {
 		// TODO Auto-generated method stub
-		return Areas.cannonOgreaArea.contains(script.myPlayer().getPosition());
+		return Areas.cannonOgreaArea.contains(script.myPlayer().getPosition()) &&
+				script.getEquipment().contains(StaticStrings.dart) &&
+				(script.getInventory().contains("Ranging Potion(4)") || script.getInventory().contains("Ranging Potion(3)") || script.getInventory().contains("Ranging Potion(2)") || script.getInventory().contains("Ranging Potion(1)"))&&
+				script.getInventory().contains("Cannonball") &&
+				script.getInventory().contains("Ardougne teleport") &&
+				script.getInventory().contains("Varrock teleport");
 	}
 
 	@Override
@@ -26,6 +33,9 @@ public class AttackingOgres extends Task {
 		RS2Object cannon = script.getObjects().closest(6);
 		RS2Object brokenCannon = script.getObjects().closest(14916);
 		Item cannonBase = script.getInventory().getItem("Cannon base");
+		Item potion = script.getInventory().getItem("Ranging potion(4)", "Ranging potion(3)", "Ranging potion(2)",
+				"Ranging potion(1)");
+		NPC ogre = script.getNpcs().closest(npc -> npc.getName().equals("Ogre") && npc.isAttackable());
 
 		Position cannonPosition = new Position(2528, 3371, 0);
 
@@ -37,36 +47,6 @@ public class AttackingOgres extends Task {
 
 		if (cannonPosition.equals(script.myPlayer().getPosition())) {
 			script.log("in the cannon position");
-
-			/*
-			 * java.util.List<Player> players = script.getPlayers().getAll();
-			 * java.util.List<Player> players1 = script.getPlayers().filter(p ->
-			 * !p.equals(script.myPlayer())); //not my player
-			 * 
-			 * for (Player pa : players) { if
-			 * (Areas.cannonOgreaArea.contains(pa) &&
-			 * !pa.getName().equals(script.myPlayer().getName()) &&
-			 * script.getInventory().contains("Cannon Base")) { //Weird why this
-			 * is true. It's true, then goes false sec
-			 * 
-			 * script.log("players in area hopping"); if
-			 * (script.getWorlds().hopToP2PWorld()){ Sleep.sleepUntil(()->
-			 * Areas.cannonOgreaArea.contains(pa) &&
-			 * pa.getName().equals(script.myPlayer().getName()) &&
-			 * script.getInventory().contains("Cannon Base"), 10000); } } }
-			 */
-
-			// else {
-			// if (script.getInventory().contains("Cannon Base")) { //u sure
-			// this wont conflict with the above cuz they both can be true why
-			// script.log("setting up cannon"); //try now, I have to go eat
-			// dinner as well.I'll be back in 30 min or so np
-			// if (cannonBase.interact("Set-up")) {
-			// Sleep.sleepUntil(() -> cannon != null, 5000);
-			// }
-			//
-			// }
-			// }
 
 			if (script.getPlayers().getAll().size() > 1 && script.getInventory().contains("Cannon Base")) {
 				script.log("hopping");
@@ -107,12 +87,28 @@ public class AttackingOgres extends Task {
 							script.log("we're firing at the ogres");
 							int boostedRangeLevel = script.getSkills().getDynamic(Skill.RANGED);
 							int rangeLevel = script.getSkills().getStatic(Skill.RANGED);
-							
-							if (boostedRangeLevel < (rangeLevel * 1.04)){
+
+							if (boostedRangeLevel < (rangeLevel * 1.04)) {
 								script.log("time to drink potion");
+								if (potion != null) {
+									potion.interact("Drink");
+								}
 							}
-							
-							
+
+							if (script.myPlayer().getInteracting() == null) {
+								script.log("Attacking Ogres");
+								if (ogre != null && ogre.interact("Attack")) {
+
+									new ConditionalSleep(20000) {
+										@Override
+										public boolean condition() {
+											return script.getCombat().isFighting()
+													|| script.myPlayer().getInteracting() != null;
+										}
+									}.sleep();
+								}
+
+							}
 						}
 					}
 				}
