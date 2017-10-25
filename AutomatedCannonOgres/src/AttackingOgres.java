@@ -54,6 +54,13 @@ public class AttackingOgres extends Task {
 			}
 
 			else {
+				if (Main.beenCrashed) {
+					 if (script.getWorlds().hopToP2PWorld()) {
+					 Main.beenCrashed = false;
+					 }
+					
+					 }
+				
 				script.log("only me in the area");
 				if (cannonBase != null) {
 					if (cannonBase.interact("Set-up")) {
@@ -115,12 +122,7 @@ public class AttackingOgres extends Task {
 			}
 		}
 
-		// if (Main.beenCrashed) {
-		// if (script.getWorlds().hopToP2PWorld()) {
-		// Main.beenCrashed = false;
-		// }
-		//
-		// }
+		
 
 		return 1000;
 	}

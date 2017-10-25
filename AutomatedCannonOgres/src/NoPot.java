@@ -1,11 +1,12 @@
 import org.osbot.rs07.api.model.Entity;
+import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.utility.ConditionalSleep;
 
-public class NoPots extends Task {
+public class NoPot extends Task {
 
-	public NoPots(Script script) {
+	public NoPot(Script script) {
 		super(script);
 		// TODO Auto-generated constructor stub
 	}
@@ -13,6 +14,7 @@ public class NoPots extends Task {
 
 	@Override
 	public boolean verify() {
+		Item cannonball = script.getInventory().getItem(2);
 
 		return !(script.getInventory().contains("Ranging potion(1)")
 				|| script.getInventory().contains("Ranging potion(2)")
@@ -21,7 +23,7 @@ public class NoPots extends Task {
 				|| script.getInventory().getItem("Ranging potion(4)").isNote()
 				&& script.getInventory().contains("Ardougne teleport")
 				&& script.getInventory().contains("Varrock teleport")
-				&& script.getInventory().contains("Cannonball")
+				&& cannonball != null
 				&& script.getEquipment().contains(StaticStrings.dart)
 				&& Areas.GEArea.contains(script.myPlayer().getPosition());
 	}
@@ -43,9 +45,9 @@ public class NoPots extends Task {
 				if (ge.interact("Exchange")) {
 					int freeSlots = script.getInventory().getEmptySlotCount();
 					
-					script.log("Using GE to buy " + freeSlots + " Ranging Potion (4)");
+					script.log("Using GE to buy 20 Ranging Potion (4)");
 					script.sleep(script.random(5000, 10000));
-					script.getGrandExchange().buyItem(2444, "Ranging Potion(4)", 2000, freeSlots);
+					script.getGrandExchange().buyItem(2444, "Ranging Potion(4)", 2000, 19);
 
 					new ConditionalSleep(script.random(3000, 5000)) {
 						public boolean condition() {

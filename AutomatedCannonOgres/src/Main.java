@@ -41,10 +41,10 @@ public class Main extends Script implements MessageListener {
 		tasks.add(new WalkToGE(this));
 		tasks.add(new WalkToOgres(this));
 		tasks.add(new NoDarts(this));
-		tasks.add(new NoPots(this));
 		tasks.add(new NoCannonballs(this));
 		tasks.add(new NoVarrockTablet(this));
 		tasks.add(new NoArdyTablet(this));
+		tasks.add(new NoPot(this));
 		
 		
 	}
@@ -73,9 +73,9 @@ public class Main extends Script implements MessageListener {
 //			beenCrashed= true;
 //		}
 //		
-//		if (msg.contains("There isn't enough space to set up here.")){
-//			beenCrashed= true;
-//		}
+		if (msg.contains("There isn't enough space to set up here.")){
+			beenCrashed= true;
+		}
 		
 		/*String msg = message.getMessage();
 		String caBotString = message.getUsername();
