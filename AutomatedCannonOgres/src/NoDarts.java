@@ -60,7 +60,7 @@ public class NoDarts extends Task {
 				if (ge.interact("Exchange")) {
 					script.log(" Using GE to buy Mith darts");
 					script.sleep(script.random(3000,5000));
-					script.getGrandExchange().buyItem(7000, StaticStrings.dart, 40, 7000);
+					script.getGrandExchange().buyItem(809, StaticStrings.dart, 40, 7000);
 
 					new ConditionalSleep(script.random(3000, 5000)) {
 						public boolean condition() {
