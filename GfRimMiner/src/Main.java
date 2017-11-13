@@ -6,8 +6,11 @@ import org.osbot.rs07.listener.MessageListener;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import java.util.StringTokenizer;
-
+import java.util.stream.Stream;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @ScriptManifest(author = "aftabdear", name = "GfRimMiner", version = 1.0, logo = "", info = "")
@@ -18,7 +21,7 @@ public class Main extends Script implements MessageListener {
 	public int hitpointsLevel;
 	public int defenceLevel;
 	public static boolean spammer = true;
-	
+	public static ArrayList<String> verifiedMules = new ArrayList<>();
 	
 	public static int oreID_1_x = 0;
 	public static int oreID_1_y = 0;
@@ -39,37 +42,55 @@ public class Main extends Script implements MessageListener {
 	public static String Slave = "";
 	public static int worldToTrade = 0;
 	
+    public void loadAccountsToList() throws IOException{
+    	String filepath = getDirectoryData() + "/Mules.txt";
+    	try(Stream<String> stream = Files.lines(Paths.get(filepath))){
+    		stream.forEach(s ->{
+//    			accounts.add(s);
+    			verifiedMules.add(s);
+    			log("Added: '"+s+"'");
+    			log(verifiedMules);
+    		});
+    	}
+    }
+	
 	@Override
 	public void onStart() {
 		if (getParameters() != null) {
 			String[] params = getParameters().split("_"); //nothing is done for the mining stuff lol
-			Slave = params[0]; 
-			Mule = params[1];
-			world = Integer.parseInt(params[2]);
-			worldToTrade = Integer.parseInt(params[3]);
-			lowLevelMining1 = Integer.parseInt(params[4]);
-			lowLevelMining2 = Integer.parseInt(params[5]);
-			oreID_1_x = Integer.parseInt(params[6]);
-			oreID_1_y = Integer.parseInt(params[7]);
-			storeMiningPos1_1 = Integer.parseInt(params[8]);
-			storeMiningPos1_2 = Integer.parseInt(params[9]);
-			storeMiningPos1_3 = Integer.parseInt(params[10]);
-			highLevelMining1 = Integer.parseInt(params[11]);
-			highLevelMining2 = Integer.parseInt(params[12]);
-			oreID_2_x = Integer.parseInt(params[13]);
-			oreID_2_y = Integer.parseInt(params[14]);
-			storeMiningPos2_1 = Integer.parseInt(params[15]);
-			storeMiningPos2_2 = Integer.parseInt(params[16]);
-			storeMiningPos2_3 = Integer.parseInt(params[17]);
+			//Slave = params[0]; 
+			//Mule = params[1];
+			world = Integer.parseInt(params[0]);//world to hop when mining 
+			worldToTrade = Integer.parseInt(params[1]); //world used to trade the mule
+			lowLevelMining1 = Integer.parseInt(param[2]); //int to start low level mining from
+			lowLevelMining2 = Integer.parseInt(params[3]); //int to start high level mining from
+			oreID_1_x = Integer.parseInt(params[4]); //x co-ordinate of low level ore to mine
+			oreID_1_y = Integer.parseInt(params[5]); //y co-ordinate of low level ore to mine
+			storeMiningPos1_1 = Integer.parseInt(params[6]);
+			storeMiningPos1_2 = Integer.parseInt(params[7]);
+			storeMiningPos1_3 = Integer.parseInt(params[8]);
+			highLevelMining1 = Integer.parseInt(params[9]);
+			highLevelMining2 = Integer.parseInt(params[10]);
+			oreID_2_x = Integer.parseInt(params[11]);
+			oreID_2_y = Integer.parseInt(params[12]);
+			storeMiningPos2_1 = Integer.parseInt(params[13]);
+			storeMiningPos2_2 = Integer.parseInt(params[14]);
+			storeMiningPos2_3 = Integer.parseInt(params[15]);
 		}
 			
-			//Mule = params[16]; 
+		try {
+			loadAccountsToList();		
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
-		
+		log("make sure to start with alow -norandoms otherwise it wont autoreplace the accounts");
 		log("position to mine before 16 mining" + Areas.miningPos1);
 		log("world to hop to when at the mine" + world);
 		log("ore x=" + " " + oreID_1_x + "ore y=" + " " + oreID_1_y);
 		
+		tasks.add(new autoLogin_autoReplacement(this));
 		tasks.add(new WalkToRJ(this));
 		tasks.add(new speakingToJuliet1(this));
 		tasks.add(new InBalcony(this));

@@ -46,8 +46,8 @@ public class WaitingForItems extends Task {
 			if (!script.getTrade().isCurrentlyTrading()) {
 				for (Player p : script.getPlayers().getAll()) {
 
-					if (p != null && p.isVisible() && p.getName().contains(Main.Slave)) {
-						if (lastRequest != null && lastRequest.interact("Trade with")) {
+					if (p != null && p.isVisible() && Main.verifiedMules.contains(p)) {
+						if (p.interact("Trade with")) {
 							script.log("We are trading our slave");
 							Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 5000);
 						}

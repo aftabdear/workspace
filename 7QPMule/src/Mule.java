@@ -29,14 +29,15 @@ public class Mule extends Task {
 		}
 		
 		else if (!script.getTrade().isCurrentlyTrading()) {
-			if (Main.verifiedSlavers.contains(lastRequesting.getName())) {
-				if (lastRequesting != null && lastRequesting.interact("Trade with")) {
+			if (lastRequesting != null && lastRequesting.interact("Trade with")) {
 					Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 10000);
-				}
+				
 			} else {
 				script.log("Cant find any of our bots");
-			}
-		} 
+			
+		}
+	}
+
 		
 		
 		else if (script.getTrade().isFirstInterfaceOpen()) {
