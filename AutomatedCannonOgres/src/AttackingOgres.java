@@ -89,6 +89,9 @@ public class AttackingOgres extends Task {
 							if (cannon.interact("Fire")) {
 								Sleep.sleepUntil(() -> script.getConfigs().get(1) == 1048576, 5000);
 							}
+							if (script.getDialogues().inDialogue()){
+								script.getDialogues().clickContinue();
+							}
 						}
 						if (script.getConfigs().get(1) == 1048576) {
 							script.log("we're firing at the ogres");
@@ -100,6 +103,10 @@ public class AttackingOgres extends Task {
 								if (potion != null) {
 									potion.interact("Drink");
 								}
+							}
+							
+							if (script.getDialogues().inDialogue()){
+								script.getDialogues().clickContinue();
 							}
 
 							if (script.myPlayer().getInteracting() == null) {

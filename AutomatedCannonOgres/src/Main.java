@@ -8,6 +8,12 @@ import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +38,14 @@ public class Main extends Script implements MessageListener {
 	@Override
 	public void onStart() {
 		
+		
+		
+		
+		
+		
 		getExperienceTracker().start(Skill.RANGED);
 
-		//int rangexp =getExperienceTracker().getGainedXPPerHour(Skill.RANGED);
+		int rangexp = getExperienceTracker().getGainedXPPerHour(Skill.RANGED);
 		startTime = System.currentTimeMillis();
 
 		tasks.add(new AttackingOgres(this));
@@ -45,6 +56,7 @@ public class Main extends Script implements MessageListener {
 		tasks.add(new NoVarrockTablet(this));
 		tasks.add(new NoArdyTablet(this));
 		tasks.add(new NoPot(this));
+
 		
 		
 	}
@@ -61,11 +73,15 @@ public class Main extends Script implements MessageListener {
 					e.printStackTrace();
 				}
 		}
+		
+		
+		
 		return 150;
 	} // think we got rid of the listener he no its
 
 	@Override
 	public void onMessage(Message message) throws java.lang.InterruptedException {
+		
 		
 		String msg = message.getMessage();
 		
