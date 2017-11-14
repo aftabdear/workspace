@@ -1,3 +1,4 @@
+package Slave;
 import org.osbot.rs07.api.Players;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.Player;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@ScriptManifest(author = "aftabdear", name = "7QPMule", version = 1.0, logo = "", info = "") // Okay.
+@ScriptManifest(author = "aftabdear", name = "GFRimSlave", version = 1.0, logo = "", info = "") // Okay.
 public class Main extends Script implements MessageListener {
 
 	static String[] itemNames = { "Pot of flour", "Egg", "Bucket of milk", "Blue dye", "Orange dye", "Clay",
@@ -34,11 +35,8 @@ public class Main extends Script implements MessageListener {
 		miningLevel = getSkills().getDynamic(Skill.MINING);
 		startTime = System.currentTimeMillis();
 
-		tasks.add(new FailSafe1(this));
-		tasks.add(new FailSafe2(this));
-		tasks.add(new FailSafe3(this));
 		tasks.add(new Slave(this));
-		tasks.add(new Mule(this));
+		
 
 	}
 

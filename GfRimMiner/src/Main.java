@@ -5,10 +5,17 @@ import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.listener.MessageListener;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+
 import java.util.StringTokenizer;
 import java.util.stream.Stream;
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -42,6 +49,8 @@ public class Main extends Script implements MessageListener {
 	public static String Slave = "";
 	public static int worldToTrade = 0;
 	
+	
+	
     public void loadAccountsToList() throws IOException{
     	String filepath = getDirectoryData() + "/Mules.txt";
     	try(Stream<String> stream = Files.lines(Paths.get(filepath))){
@@ -62,7 +71,7 @@ public class Main extends Script implements MessageListener {
 			//Mule = params[1];
 			world = Integer.parseInt(params[0]);//world to hop when mining 
 			worldToTrade = Integer.parseInt(params[1]); //world used to trade the mule
-			lowLevelMining1 = Integer.parseInt(param[2]); //int to start low level mining from
+			lowLevelMining1 = Integer.parseInt(params[2]); //int to start low level mining from
 			lowLevelMining2 = Integer.parseInt(params[3]); //int to start high level mining from
 			oreID_1_x = Integer.parseInt(params[4]); //x co-ordinate of low level ore to mine
 			oreID_1_y = Integer.parseInt(params[5]); //y co-ordinate of low level ore to mine
@@ -118,13 +127,17 @@ public class Main extends Script implements MessageListener {
 		tasks.add(new WalkToCA2(this));
 		tasks.add(new WalkToCA3(this));
 		tasks.add(new WalkToDQ(this));
-		//tasks.add(new WalkToGD(this));
+		
 		tasks.add(new WalkToBankToUnote(this));
 		tasks.add(new CAQuest(this));
 		tasks.add(new DQQuest(this));
+		
+		//tasks.add(new WalkToGD(this));
 		//tasks.add(new GDQuest(this));
 		//tasks.add(new inDialogue(this));
 		//tasks.add(new GDToFallyBank(this));
+		
+		
 		
 
 		rangeLevel = getSkills().getDynamic(Skill.RANGED);
@@ -133,6 +146,8 @@ public class Main extends Script implements MessageListener {
 
 		startTime = System.currentTimeMillis();
 	}
+	
+	
 
 	@Override
 	public int onLoop() throws InterruptedException {
@@ -148,6 +163,10 @@ public class Main extends Script implements MessageListener {
 		}
 		return 150;
 	}
+	
+	
+	 
+
 
 	@Override
 	public void onMessage(Message message) throws InterruptedException {
@@ -163,20 +182,7 @@ public class Main extends Script implements MessageListener {
 		g.drawString("Aftabdear's Automated", 20, 150);
 		g.drawString("Rim Miner + 7QP", 20, 160);
 
-		/*
-		 * g.drawString("Current Range Level: " +
-		 * this.getSkills().getDynamic(Skill.RANGED) + "(" +
-		 * (this.getSkills().getDynamic(Skill.RANGED) - rangeLevel) + ")", 20,
-		 * 200); g.drawString("Current Defence Level: " +
-		 * this.getSkills().getDynamic(Skill.DEFENCE) + "(" +
-		 * (this.getSkills().getDynamic(Skill.DEFENCE) - defenceLevel) + ")",
-		 * 20, 250);
-		 * 
-		 * g.drawString("Current Hitpoints Level: " +
-		 * this.getSkills().getDynamic(Skill.HITPOINTS) + "(" +
-		 * (this.getSkills().getDynamic(Skill.HITPOINTS) - hitpointsLevel) +
-		 * ")", 20, 225);
-		 */ g.drawString("Time Ran (Minutes) : " + (int) ((System.currentTimeMillis() - this.startTime) / 60000), 20,
+		g.drawString("Time Ran (Minutes) : " + (int) ((System.currentTimeMillis() - this.startTime) / 60000), 20,
 				300);
 		g.drawRect(15, 135, 200, 180);
 

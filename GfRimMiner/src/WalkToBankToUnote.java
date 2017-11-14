@@ -16,13 +16,10 @@ public class WalkToBankToUnote extends Task {
 
 	@Override
 	public boolean verify() {
-		// TODO Auto-generated method stub script.getInventory().getItem("Goblin
-		// mail").isNote()
+		
 		return script.getInventory().contains("Clay") && script.getInventory().getItem("Clay").isNote()
 				|| Areas.lumbridgeBank.contains(script.myPlayer().getPosition())
-						&& script.getQuests().getQuestPoints() == 0; // added
-																		// that
-																		// recently
+						&& script.getQuests().getQuestPoints() == 0; 
 	}
 
 	@Override
@@ -31,10 +28,7 @@ public class WalkToBankToUnote extends Task {
 
 		Entity ladder = script.getObjects().closest("Ladder");
 		Entity door = script.getObjects().closest("Door");
-		Entity stairs = script.getObjects().closest("Staircase");// was working
-																	// just fine
-																	// ytd one
-																	// sec
+		Entity stairs = script.getObjects().closest("Staircase");
 
 		if (Areas.lumbridgeTowerFloor1.contains(script.myPlayer().getPosition())) {
 			if (ladder != null && ladder.isVisible()) {
