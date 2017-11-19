@@ -2,6 +2,8 @@ import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.Player;
 import org.osbot.rs07.script.Script;
 
+
+
 public class WaitingForItems extends Task {
 
 	public WaitingForItems(Script script) {
@@ -19,7 +21,7 @@ public class WaitingForItems extends Task {
 	@Override
 	public int execute() throws Exception {
 		script.log("in the WaitingForItem class");
-		Player lastRequest = script.getTrade().getLastRequestingPlayer();
+		Player lastRequesting = script.getTrade().getLastRequestingPlayer();
 
 		if (script.getDialogues().inDialogue()) {
 			if (script.dialogues.clickContinue()){
@@ -36,24 +38,39 @@ public class WaitingForItems extends Task {
 
 		if (Main.worldToTrade == script.worlds.getCurrentWorld()) {
 			script.log("in the correct world");
+			
+//old method
 
-			if (Main.spammer) {
-				if (script.getKeyboard().typeString("hello", true)) {
-					Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 5000);
-				}
+//			if (Main.spammer) {
+//				if (script.getKeyboard().typeString("hello", true)) {
+//					Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 5000);
+//				}
+//			}
+			
+//			for (Player p : script.getPlayers().getAll()) {
+
+//			if (p != null && p.isVisible() && Main.verifiedMules.contains(p)) {
+//				if (p.interact("Trade with")) {
+//					script.log("We are trading our slave");
+//					Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 5000);
+//				}
+//			}
+			
+			
+			if (script.getKeyboard().typeString("hello", true) && lastRequesting == null) {
+				script.log("waiting for trade");
 			}
-
+			
+				
 			if (!script.getTrade().isCurrentlyTrading()) {
-				for (Player p : script.getPlayers().getAll()) {
 
-					if (p != null && p.isVisible() && Main.verifiedMules.contains(p)) {
-						if (p.interact("Trade with")) {
-							script.log("We are trading our slave");
-							Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 5000);
-						}
-					}
+				if (lastRequesting != null && lastRequesting.interact("Trade with")) {
+					script.log("we can see the trade");
+					Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 10000);
+
 				}
 			}
+		
 
 			else if (script.getTrade().isFirstInterfaceOpen()) {
 				if (script.getTrade().acceptTrade()) {

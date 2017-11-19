@@ -20,7 +20,7 @@ public class Config1 extends Task {
 
 	@Override
 	public int execute() throws Exception {
-		script.log("in config1 class - walking to juliet");
+		script.log("in config1 class - walking to Romeo");
 		NPC romeo = script.getNpcs().closest("Romeo");
 		RS2Object doorAClosed = script.getObjects().closest(Areas.b, 11773);
 		RS2Object doorAOpen = script.getObjects().closest(Areas.b, 11772);

@@ -1,3 +1,4 @@
+package DangerousMule2;
 import java.util.Arrays;
 
 import org.osbot.rs07.api.map.constants.Banks;
@@ -13,7 +14,7 @@ public class FailSafe1 extends Task{
 	@Override
 	public boolean verify() {
 		// TODO Auto-generated method stub
-		return Areas.failSafe1.contains(script.myPlayer().getPosition());
+		return Areas.failSafe1.contains(script.myPlayer().getPosition()) && script.getClient().isLoggedIn();
 	}
 
 	@Override

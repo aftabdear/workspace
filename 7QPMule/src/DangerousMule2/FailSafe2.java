@@ -1,12 +1,12 @@
-package DangerousMule;
+package DangerousMule2;
 import java.util.Arrays;
 
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.script.Script;
 
-public class FailSafe1 extends Task{
+public class FailSafe2 extends Task{
 
-	public FailSafe1(Script script) {
+	public FailSafe2(Script script) {
 		super(script);
 		// TODO Auto-generated constructor stub
 	}
@@ -14,12 +14,12 @@ public class FailSafe1 extends Task{
 	@Override
 	public boolean verify() {
 		// TODO Auto-generated method stub
-		return Areas.failSafe1.contains(script.myPlayer().getPosition());
+		return Areas.failSafe2.contains(script.myPlayer().getPosition()) && script.getClient().isLoggedIn();
 	}
 
 	@Override
 	public int execute() throws Exception {
-		script.log("in fail safe 1");
+		script.log("in fail safe 2");
 		if (script.getWalking().walkPath(Arrays.asList(Areas.pathMineToBank1))){
 			Sleep.sleepUntil(()-> Banks.FALADOR_EAST.contains(script.myPlayer().getPosition()), 10000);
 		}

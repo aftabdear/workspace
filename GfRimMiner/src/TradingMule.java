@@ -53,7 +53,7 @@ public class TradingMule extends Task {
 
 			if (!script.getTrade().isCurrentlyTrading()) {
 				for (Player p : script.getPlayers().getAll()) {
-					if (p!= null && p.isVisible() &&Main.verifiedMules.contains(p)) { 
+					if (p!= null && p.isVisible() && Main.verifiedMules.contains(p)) { 
 						if (p.interact("Trade with")) {
 							Sleep.sleepUntil(() -> script.getTrade().isCurrentlyTrading(), 10000);
 						}

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@ScriptManifest(author = "aftabdear", name = "GFRimSafeMule", version = 1.0, logo = "", info = "") // Okay.
+@ScriptManifest(author = "aftabdear", name = "GfRimSafeMule", version = 1.0, logo = "", info = "") // Okay.
 public class Main extends Script implements MessageListener {
 
 	static String[] itemNames = { "Pot of flour", "Egg", "Bucket of milk", "Blue dye", "Orange dye", "Clay",
@@ -38,7 +38,12 @@ public class Main extends Script implements MessageListener {
 	private long startTime;
 	private LoginEvent last;
 	private LoginEvent loginEvent;
-	public static boolean MULING = true;
+	public static String loginUsername = "";
+	public static String loginPassword = "";
+	public static String ign = "";
+
+	
+	
 	
 	//tcp socket stuff
 		static Socket s1 = null;
@@ -50,13 +55,13 @@ public class Main extends Script implements MessageListener {
 	@Override
 	public void onStart() throws InterruptedException {
 		grabFirstAccount(); 
-        loginEvent = new LoginEvent(LogIn.loginUsername, LogIn.loginPassword);
+        loginEvent = new LoginEvent(loginUsername, loginPassword);
         getBot().addLoginListener(loginEvent);
         last = loginEvent; 
         sleep(1000); 
         execute(loginEvent);
 		sleep(20000);
-		LogIn.ign = myPlayer().getName().toString();
+		ign = myPlayer().getName().toString();
 		getTabs().open(Tab.LOGOUT);
 		getWidgets().get(182, 6).interact("Logout");
 
@@ -67,7 +72,7 @@ public class Main extends Script implements MessageListener {
 		tasks.add(new FailSafe2(this));
 		tasks.add(new FailSafe3(this));
 		tasks.add(new Mule(this));
-		tasks.add(new LogIn(this));
+		//tasks.add(new LogIn(this));
 		
 		
 		
@@ -94,7 +99,36 @@ public class Main extends Script implements MessageListener {
 	private void parseServerMessage(String message) {
         log(message);
         if (message.contains("NEEDMULE")) {
-            MULING = true;
+        	
+        	
+        	
+        	Player lastRequesting = getTrade().getLastRequestingPlayer();
+        	log("we recieved needmule");
+        	if (last != null) {
+    			getBot().removeLoginListener(last);
+    		}
+    		grabFirstAccount();
+    		loginEvent = new LoginEvent(loginUsername, loginPassword);
+    		getBot().addLoginListener(loginEvent);
+    		last = loginEvent;
+    		execute(loginEvent);
+
+    		if (getClient().isLoggedIn()) {
+    			Main.getResponseForString("MULE*" + ign);
+
+    			if (lastRequesting != null && lastRequesting.isVisible()) {
+    				if (!getTrade().isCurrentlyTrading()) {
+    					if (lastRequesting.interact("Trade with")) {
+    						Sleep.sleepUntil(() -> getTrade().isCurrentlyTrading(), 10_000);
+    					}
+    				}
+    			}
+
+    		}
+    		
+    		
+    		
+    		
         }else if (message.contains("gadga")) {
          	//getResponseForString(myPlayer().getName().toString());
          	
@@ -163,7 +197,7 @@ public class Main extends Script implements MessageListener {
   public void grabFirstAccount() { 
       InputStream in = null;
       try {
-          in = new FileInputStream(new File(getDirectoryData() + "/Mules.txt"));
+          in = new FileInputStream(new File(getDirectoryData() + "/SafeMules.txt"));
       } catch (FileNotFoundException e) {
           e.printStackTrace();
       }
@@ -180,14 +214,14 @@ public class Main extends Script implements MessageListener {
           String username = splitString[0]; 
           String password = splitString[1]; 
 
-          LogIn.loginUsername = username; 
-          LogIn.loginPassword = password;
+          loginUsername = username; 
+          loginPassword = password;
       } catch (IOException e) {
           e.printStackTrace();
       }
 
-      log(LogIn.loginUsername);
-      log(LogIn.loginPassword);
+      log(loginUsername);
+      log(loginPassword);
 
 
       try {

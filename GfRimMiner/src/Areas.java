@@ -386,7 +386,8 @@ public static Area berryArea = new Area(3266, 3375, 3276, 3365);
 		    new Position(3192, 3429, 0),
 		    new Position(3197, 3429, 0),
 		    new Position(3207, 3428, 0),
-		    new Position(3212, 3428, 0)
+		    new Position(3212, 3428, 0),
+		    new Position(3213, 3421, 0)
 		};
 	
 	

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@ScriptManifest(author = "aftabdear", name = "GFRimSlave", version = 1.0, logo = "", info = "") // Okay.
+@ScriptManifest(author = "aftabdear", name = "GfRimSlave", version = 1.0, logo = "", info = "") // Okay.
 public class Main extends Script implements MessageListener {
 
 	static String[] itemNames = { "Pot of flour", "Egg", "Bucket of milk", "Blue dye", "Orange dye", "Clay",

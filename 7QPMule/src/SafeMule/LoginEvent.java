@@ -159,8 +159,8 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					LogIn.loginPassword = null;
-					LogIn.loginPassword = null;
+					Main.loginPassword = null;
+					Main.loginPassword = null;
 					grabNewAccount();
             	//badabingbadaboom
 					
@@ -226,7 +226,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
     }
 
     public void removeFirstAccount() throws IOException {
-        File fileName = new File(main.getDirectoryData(), "/Mules.txt");
+        File fileName = new File(main.getDirectoryData(), "/SafeMules.txt");
         RandomAccessFile raf = new RandomAccessFile(fileName, "rw");
         //Initial write position
         long writePosition = raf.getFilePointer(); //The first write position in our Accounts.txt file
@@ -249,7 +249,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
     public void grabNewAccount() {
         InputStream in = null;
         try {
-            in = new FileInputStream(new File(main.getDirectoryData() + "/Mules.txt"));
+            in = new FileInputStream(new File(main.getDirectoryData() + "/SafeMules.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -266,14 +266,14 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
             String username = splitString[0]; 
             String password = splitString[1]; 
 
-            LogIn.loginUsername = username; 
-            LogIn.loginPassword = password;
+            Main.loginUsername = username; 
+            Main.loginPassword = password;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        log(LogIn.loginUsername);
-        log(LogIn.loginPassword);
+        log(Main.loginUsername);
+        log(Main.loginPassword);
 
 
         try {

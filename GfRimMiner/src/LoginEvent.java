@@ -160,8 +160,14 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
             setFailed();
             return;
         }
+        
+        if (responseCode == 5) { 
+        	
+        	pickLine++;
+        	grabSecondAccount();
+        }
 
-        if(ResponseCode.isConnectionError(responseCode)) {
+        if(ResponseCode.isConnectionError(responseCode)) { //come on my other monitor 
             log("Connection error, attempts exceeded");
             setFailed(); 
             return;
@@ -202,7 +208,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         raf.setLength(writePosition);
         raf.close(); //sec
     }
-    
+
     public void grabNewAccount() {
         InputStream in = null;
         try {
@@ -214,9 +220,61 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         StringBuilder out = new StringBuilder();
         String line;
         try {
+        	
             if ((line = reader.readLine()) != null) {
                 out.append(line);
             }
+
+            String grabFullName = out.toString();
+            String[] splitString = grabFullName.split(":");
+            String username = splitString[0]; 
+            String password = splitString[1]; 
+
+            autoLogin_autoReplacement.loginUsername = username; 
+            autoLogin_autoReplacement.loginPassword = password;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        log(autoLogin_autoReplacement.loginUsername);
+        log(autoLogin_autoReplacement.loginPassword);
+
+
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    private int lineCounter = 0;
+    private int pickLine = 0;
+    
+    public void grabSecondAccount() {
+        InputStream in = null;
+        try {
+            in = new FileInputStream(new File(main.getDirectoryData() + "/Accounts.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        StringBuilder out = new StringBuilder();
+        String line;
+        try {
+        	
+        	while ((line = reader.readLine()) != null) {
+        		
+        		lineCounter++; //Counts the line
+        		if (lineCounter == pickLine) { //If line number == our chosen number given in the responseCode
+        			out.append(line); //Then use the text in the line. /lol we did this in the wrong class lmao
+        			break;
+        		}
+        	}
+        	
+//            if ((line = reader.readLine()) != null) {
+//                out.append(line);
+//            }
 
             String grabFullName = out.toString();
             String[] splitString = grabFullName.split(":");

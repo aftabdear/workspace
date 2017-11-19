@@ -52,7 +52,7 @@ public class Main extends Script implements MessageListener {
 	
 	
     public void loadAccountsToList() throws IOException{
-    	String filepath = getDirectoryData() + "/Mules.txt";
+    	String filepath = getDirectoryData() + "/MulesIGN.txt";
     	try(Stream<String> stream = Files.lines(Paths.get(filepath))){
     		stream.forEach(s ->{
 //    			accounts.add(s);
@@ -66,9 +66,7 @@ public class Main extends Script implements MessageListener {
 	@Override
 	public void onStart() {
 		if (getParameters() != null) {
-			String[] params = getParameters().split("_"); //nothing is done for the mining stuff lol
-			//Slave = params[0]; 
-			//Mule = params[1];
+			String[] params = getParameters().split("_"); //params
 			world = Integer.parseInt(params[0]);//world to hop when mining 
 			worldToTrade = Integer.parseInt(params[1]); //world used to trade the mule
 			lowLevelMining1 = Integer.parseInt(params[2]); //int to start low level mining from
@@ -88,10 +86,14 @@ public class Main extends Script implements MessageListener {
 		}
 			
 		try {
-			loadAccountsToList();		
+			loadAccountsToList();
+			sleep(10000);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		log("make sure to start with alow -norandoms otherwise it wont autoreplace the accounts");
@@ -168,12 +170,12 @@ public class Main extends Script implements MessageListener {
 	 
 
 
-	@Override
-	public void onMessage(Message message) throws InterruptedException {
-		if (message.getType() == Message.MessageType.PLAYER && message.getMessage().contains("Hello " + myPlayer().getName())) {
-			spammer = false; //Alright, this should do now show me the slave class
-		}
-	}
+//	@Override
+//	public void onMessage(Message message) throws InterruptedException {
+//		if (message.getType() == Message.MessageType.PLAYER && message.getMessage().contains("Hello " + myPlayer().getName())) {
+//			spammer = false; //Alright, this should do now show me the slave class
+//		}
+//	}
 
 	@Override
 	public void onPaint(Graphics2D g) {

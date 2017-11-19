@@ -1,4 +1,6 @@
+import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.NPC;
+import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
 
 public class InBalcony extends Task {
@@ -18,8 +20,15 @@ public class InBalcony extends Task {
 	public int execute() throws Exception {
 		script.log("in the inBalcony class");
 		NPC juliet = script.getNpcs().closest("Juliet");
+		Position failSafe1 = new Position(3160, 3425, 1);
 
 		if (juliet != null && script.getMap().canReach(juliet)) {
+			
+
+				WalkingEvent wEvent = new WalkingEvent(failSafe1);
+				wEvent.setMinDistanceThreshold(0);
+				script.execute(wEvent);
+			
 			if (!script.getDialogues().inDialogue()) {
 				if (juliet.interact("Talk-to")) {
 					Sleep.sleepUntil(() -> script.getDialogues().inDialogue(), 5000);

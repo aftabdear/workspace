@@ -1,3 +1,4 @@
+package DangerousMule2;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.script.Script;
 

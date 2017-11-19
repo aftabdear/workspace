@@ -1,4 +1,4 @@
-package DangerousMule;
+package DangerousMule2;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.constants.ResponseCode;
 import org.osbot.rs07.event.Event;

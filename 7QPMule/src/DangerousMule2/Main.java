@@ -1,4 +1,4 @@
-package DangerousMule;
+package DangerousMule2;
 import org.osbot.rs07.api.Players;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.Player;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@ScriptManifest(author = "aftabdear", name = "GFRimDangerousMule", version = 1.0, logo = "", info = "") // Okay.
+@ScriptManifest(author = "aftabdear", name = "GfRimDangerousMule", version = 1.0, logo = "", info = "") // Okay.
 public class Main extends Script implements MessageListener {
 
 	static String[] itemNames = { "Pot of flour", "Egg", "Bucket of milk", "Blue dye", "Orange dye", "Clay",
@@ -32,7 +32,9 @@ public class Main extends Script implements MessageListener {
 	public static List<String> tradingItems = Arrays.asList(itemNames);
 	public static String[] authorisedSlaves;
 	private long startTime;
-	public static String safeMuleName;
+	//public static String safeMuleName;
+	public static ArrayList<String> safeMuleName = new ArrayList<>();
+	public static String username;
 	
 	//tcp socket stuff
 		static Socket s1 = null;
@@ -47,11 +49,15 @@ public class Main extends Script implements MessageListener {
 		
 		startTime = System.currentTimeMillis();
 
+		tasks.add(new LogIn(this));
 		tasks.add(new FailSafe1(this));
 		tasks.add(new FailSafe2(this));
 		tasks.add(new FailSafe3(this));
 		tasks.add(new Mule(this));
-		tasks.add(new LogIn(this));
+		
+		
+		
+		
 		
 		try {
 			//sleep(20000);
@@ -78,7 +84,9 @@ public class Main extends Script implements MessageListener {
         if (message.contains("*")) {
         	String[] splitString = message.split("\\*");
             String task = splitString[0]; 
-            safeMuleName = splitString[1]; 
+            username = splitString[1];
+           
+            log(username);
 
             
         }else if (message.contains("gadga")) {
