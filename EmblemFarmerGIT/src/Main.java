@@ -8,6 +8,8 @@ import org.osbot.rs07.listener.MessageListener;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
+
+
 import java.util.StringTokenizer;
 import java.util.stream.Stream;
 import java.awt.*;
@@ -30,7 +32,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-@ScriptManifest(author = "aftabdear", name = "EmblemFarmer2", version = 1.0, logo = "", info = "")
+@ScriptManifest(author = "aftabdear", name = "EmblemFarmer", version = 1.0, logo = "", info = "")
 public class Main extends Script implements MessageListener {
 	private ArrayList<Task> tasks = new ArrayList<>();
 	public static boolean pauseScript = false;
@@ -40,10 +42,14 @@ public class Main extends Script implements MessageListener {
 	public int defenceLevel;
 	public static boolean ATTACKER = false;
 	public static boolean BYSTANDER = false;
+	public static boolean RELOCATE = false;
 	public static ArrayList<String> verifiedBots = new ArrayList<>();
 	public static LinkedList<String> accounts = new LinkedList<String>();
 	public static Iterator<String> it;
 	public static int ourTier = 0;
+	public static String IGN;
+	private LoginEvent loginEvent;
+	public static HashSet<String> set = new HashSet<>(verifiedBots);
 
 	// tcp socket stuff
 	static Socket s1 = null;
@@ -53,10 +59,23 @@ public class Main extends Script implements MessageListener {
 
 
 
-	public static Integer arrayTiers[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	public static Integer arrayTiers[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 , 10 };
+	public static String loginUsername = "micahxbrisk@yahoo.com";
+	public static String loginPassword = "oldschool123";
+	
+	
 	
 	@Override
 	public void onStart() throws InterruptedException {
+		
+		
+		loginEvent = new LoginEvent(loginUsername, loginPassword);
+        getBot().addLoginListener(loginEvent);
+        sleep(20000); 
+        execute(loginEvent);
+		sleep(5000);
+		IGN = myPlayer().getName().toString();
+		getSettings().getLogoutTab().logOut();
 
 		tasks.add(new WaitingForTarget(this));
 		tasks.add(new AssignedATarget(this));
@@ -64,9 +83,8 @@ public class Main extends Script implements MessageListener {
 
 		startTime = System.currentTimeMillis();
 
-		try {
-			sleep(5000);
-			s1 = new Socket("localhost", 1337);
+		try {			
+			s1 = new Socket("localhost", 1338);
 			is = new BufferedReader(new InputStreamReader(s1.getInputStream()));
 			os = new PrintWriter(s1.getOutputStream());
 		} catch (UnknownHostException e) {
@@ -75,9 +93,6 @@ public class Main extends Script implements MessageListener {
 			e.printStackTrace();
 		}
 		if (s1.isConnected()) {
-			// getResponseForString("USERNAME:" +
-			// myPlayer().getName().toString()); //think it'll connect to server
-			// now aight sec
 			clientListener = new BotClientListener();
 			clientListener.start();
 		} else {
@@ -179,7 +194,7 @@ public class Main extends Script implements MessageListener {
 
 		} else if (message.contains("&")) {
 			//send your username
-			getResponseForString("+-" +myPlayer().getName().toString());
+			getResponseForString("+-" + IGN);
 
 		}else if (message.contains("+")) {
 			//split string and add to arrayList
@@ -188,7 +203,8 @@ public class Main extends Script implements MessageListener {
 			String arrayUsername = msg[1];
 			
 			verifiedBots.add(arrayUsername);
-			HashSet<String> set = new HashSet<>(verifiedBots);
+			
+			log(set);
 			
 			
 

@@ -18,7 +18,9 @@ public class Plan {
 * 
 * 
 * 
-* 
+* ATTACKER - send area he is in to the BYSTANDER
+* 		   - wait to be under attack / check if underattack is correct player 
+* 		   - if underattack by a different player run south 
 * 
 * 
 * 
