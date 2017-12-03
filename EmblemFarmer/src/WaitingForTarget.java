@@ -11,7 +11,8 @@ public class WaitingForTarget extends Task{
 	@Override
 	public boolean verify() {
 		RS2Widget Target = script.getWidgets().get(90, 37);
-		return Target != null && Target.getMessage().equals("None");
+		return Target != null && Target.getMessage().equals("None")
+				&& !Main.BYSTANDER && !Main.ATTACKER;
 	}
 	
 	

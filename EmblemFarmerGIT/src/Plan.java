@@ -1,3 +1,4 @@
+import org.osbot.rs07.api.ui.RS2Widget;
 
 public class Plan {
 
@@ -37,3 +38,7 @@ public class Plan {
 *
 *
 */
+//
+//script.log("pending options");
+//yes.interact();
+//RS2Widget yes = script.getWidgets().get(219, 0, 1);

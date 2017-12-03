@@ -3,7 +3,10 @@ import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Vector3D;
 
 public class Areas {
+	
+	
 	public static Area a = new Area(3096, 3526, 3097, 3525);
+
 	
 	public static Position[] pathToA = {
 		    new Position(3117, 3523, 0),

@@ -23,7 +23,7 @@ public class AssignedATarget extends Task {
 
 		script.log("In the AssignedATarget class");
 		script.log("We have been assigned a Target");
-
+		
 		Item tier1 = script.getInventory().getItem("Mysterious emblem");
 		Item tier2 = script.getInventory().getItem("Mysterious emblem (tier 2)");
 		Item tier3 = script.getInventory().getItem("Mysterious emblem (tier 3)");
@@ -38,12 +38,14 @@ public class AssignedATarget extends Task {
 		RS2Widget Target = script.getWidgets().get(90, 37);
 
 		RS2Widget Skip = script.getWidgets().get(90, 40);
+		
 		TargetName = Target.getMessage();
 
 		script.log("Currently assigned to " + TargetName);
+		script.log(Areas.a);
 
 		if (Main.set.contains(Target)) { // if our array contains the username
-
+			
 			Main.getResponseForString("$" + TargetName);
 
 			if (tier1 != null) {
@@ -111,19 +113,12 @@ public class AssignedATarget extends Task {
 
 			}
 		}
-		//
-		// if (script.getDialogues().isPendingContinuation()) {
-		// if (script.getDialogues().clickContinue()) {
-		// Sleep.sleepUntil(()-> !script.getDialogues().inDialogue(),5000);
-		// }
-		// }
-		//
 
 		if (script.myPlayer().isUnderAttack()) {
 			script.log("The Player that is attacking us is: " + interactingPlayerName());
 		}
 
-		return 10000;
+		return 5000;
 	}
 
 	public String interactingPlayerName() {

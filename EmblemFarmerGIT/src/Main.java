@@ -8,8 +8,6 @@ import org.osbot.rs07.listener.MessageListener;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
-
-
 import java.util.StringTokenizer;
 import java.util.stream.Stream;
 import java.awt.*;
@@ -46,8 +44,9 @@ public class Main extends Script implements MessageListener {
 	public static ArrayList<String> verifiedBots = new ArrayList<>();
 	public static LinkedList<String> accounts = new LinkedList<String>();
 	public static Iterator<String> it;
-	public static int ourTier = 0;
+	public static int ourTier = 2;
 	public static String IGN;
+	public static String relocationArea;
 	private LoginEvent loginEvent;
 	public static HashSet<String> set = new HashSet<>(verifiedBots);
 
@@ -57,22 +56,17 @@ public class Main extends Script implements MessageListener {
 	static PrintWriter os = null;
 	BotClientListener clientListener = null;
 
-
-
-	public static Integer arrayTiers[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 , 10 };
+	public static Integer arrayTiers[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	public static String loginUsername = "micahxbrisk@yahoo.com";
 	public static String loginPassword = "oldschool123";
-	
-	
-	
+
 	@Override
 	public void onStart() throws InterruptedException {
-		
-		
+
 		loginEvent = new LoginEvent(loginUsername, loginPassword);
-        getBot().addLoginListener(loginEvent);
-        sleep(20000); 
-        execute(loginEvent);
+		getBot().addLoginListener(loginEvent);
+		sleep(20000);
+		execute(loginEvent);
 		sleep(5000);
 		IGN = myPlayer().getName().toString();
 		getSettings().getLogoutTab().logOut();
@@ -80,10 +74,12 @@ public class Main extends Script implements MessageListener {
 		tasks.add(new WaitingForTarget(this));
 		tasks.add(new AssignedATarget(this));
 		tasks.add(new TargetWidgetIsNotVisible(this));
+		tasks.add(new ATTACKER(this));
+		tasks.add(new WalkToRandomArea(this));
 
 		startTime = System.currentTimeMillis();
 
-		try {			
+		try {
 			s1 = new Socket("localhost", 1338);
 			is = new BufferedReader(new InputStreamReader(s1.getInputStream()));
 			os = new PrintWriter(s1.getOutputStream());
@@ -116,12 +112,10 @@ public class Main extends Script implements MessageListener {
 		return 150;
 	}
 
-	
-
 	private void parseServerMessage(String message) {
 		log(message);
 		if (message.contains("$") && message.contains(myPlayer().getName().toString())) {
-			
+
 			Item tier1 = getInventory().getItem("Mysterious emblem");
 			Item tier2 = getInventory().getItem("Mysterious emblem (tier 2)");
 			Item tier3 = getInventory().getItem("Mysterious emblem (tier 3)");
@@ -133,47 +127,19 @@ public class Main extends Script implements MessageListener {
 			Item tier9 = getInventory().getItem("Mysterious emblem (tier 8)");
 			Item tier10 = getInventory().getItem("Mysterious emblem (tier 10)");
 
-//			if (tier1 != null) {
-//				getResponseForString("£-1-" + myPlayer().getName().toString());
-//			}
-//			if (tier2 != null) {
-//				getResponseForString("£-2-" + myPlayer().getName().toString());
-//			}
-//			if (tier3 != null) {
-//				getResponseForString("£-3" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier4 != null) {
-//				getResponseForString("£-4" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier5 != null) {
-//				getResponseForString("£-5" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier6 != null) {
-//				getResponseForString("£-6" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier7 != null) {
-//				getResponseForString("£-7" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier8 != null) {
-//				getResponseForString("£-8" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier9 != null) {
-//				getResponseForString("£-9" + "-" + myPlayer().getName().toString());
-//			}
-//			if (tier10 != null) {
-//				getResponseForString("£-10" + "-" + myPlayer().getName().toString());
-//			}
+		} else if (message.contains("£-1") && message.contains(myPlayer().getName().toString())) { // the
+																									// targets
+																									// tier
+																									// is
+																									// 1
 
-		} else if (message.contains("£-1") && message.contains(myPlayer().getName().toString())) { //the targets tier is 1
-			
 			Item tier1 = getInventory().getItem("Mysterious emblem");
-		
-			
+
 			String msg[] = message.split("-");
 			String NA = msg[0];
 			String StringTier = msg[1];
 			String Username = msg[2];
-			
+
 			int Player2sTier = Integer.parseInt(StringTier);
 
 			if (ourTier > Player2sTier) {
@@ -189,26 +155,36 @@ public class Main extends Script implements MessageListener {
 			}
 
 		} else if (message.contains("connected from")) {
-			//request usernames to be resent to update arrayList
+			// request usernames to be resent to update arrayList
 			getResponseForString("&SENDUSERNAMES");
 
 		} else if (message.contains("&")) {
-			//send your username
+			// send your username
 			getResponseForString("+-" + IGN);
 
-		}else if (message.contains("+")) {
-			//split string and add to arrayList
+		} else if (message.contains("+")) {
+			// split string and add to arrayList
 			String msg[] = message.split("-");
 			String addSymbol = msg[0];
 			String arrayUsername = msg[1];
-			
-			verifiedBots.add(arrayUsername);
-			
-			log(set);
-			
-			
 
-		}else {
+			verifiedBots.add(arrayUsername);
+
+			log(set);
+
+		} else if (message.contains("^") && message.contains(myPlayer().getName().toString())) {
+
+			// split string and add to arrayList
+			String msg[] = message.split("-");
+			String symbol = msg[0];
+			String myName = msg[1];
+			String Area = msg[2];
+
+			if (Area.equals("a")) {
+				relocationArea = "a";
+			}
+
+		} else {
 			switch (message) {
 			case "LEVEL":
 				break;
@@ -271,7 +247,7 @@ public class Main extends Script implements MessageListener {
 		super.onPaint(g);
 		g.setColor(Color.CYAN);
 		g.drawString("Aftabdear's Automated", 20, 150);
-		g.drawString("Emblem Farmer", 20, 160);
+		g.drawString("EF", 20, 160);
 		g.drawString("Time Ran (Minutes) : " + (int) ((System.currentTimeMillis() - this.startTime) / 60000), 20, 300);
 		g.drawRect(15, 135, 200, 180);
 

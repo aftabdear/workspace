@@ -19,6 +19,9 @@ public class TargetWidgetIsNotVisible extends Task{
 		script.log("in the TargetWidgetIsNotVisble class");
 		script.log("Not in Wilderness");
 		
+		if (script.getBank().contains("Amulet of glory")){
+			script.log("we have a glory");
+		}
 		//only activates when first logged in
 		return 1000;
 	}
