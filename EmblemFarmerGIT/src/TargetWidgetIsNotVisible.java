@@ -11,7 +11,7 @@ public class TargetWidgetIsNotVisible extends Task{
 	@Override
 	public boolean verify() {
 		RS2Widget Target = script.getWidgets().get(90, 37);
-		return Target == null && !Main.BYSTANDER && !Main.ATTACKER;
+		return Target == null && !Main.BYSTANDER && !Main.ATTACKER && BankCache.getBankCache() != null;
 	}
 
 	@Override

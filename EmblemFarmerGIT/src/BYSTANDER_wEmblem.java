@@ -22,7 +22,7 @@ public class BYSTANDER_wEmblem extends Task {
 		Item tier9 = script.getInventory().getItem("Mysterious emblem (tier 8)");
 		Item tier10 = script.getInventory().getItem("Mysterious emblem (tier 10)");
 		return (tier1 != null || tier2 != null || tier3 != null || tier4 != null || tier5 != null || tier6 != null
-				|| tier7 != null || tier8 != null || tier9 != null || tier10 != null) && Main.BYSTANDER;
+				|| tier7 != null || tier8 != null || tier9 != null || tier10 != null) && Main.BYSTANDER && BankCache.getBankCache() != null;
 	}
 
 	@Override

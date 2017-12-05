@@ -13,7 +13,7 @@ public class BYSTANDER extends Task {
 	@Override
 	public boolean verify() {
 		// TODO Auto-generated method stub
-		return Main.BYSTANDER && !Main.ATTACKER && !Main.RELOCATE;
+		return Main.BYSTANDER && !Main.ATTACKER && !Main.RELOCATE && BankCache.getBankCache() != null;
 	}
 
 	@Override

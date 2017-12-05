@@ -16,7 +16,7 @@ public class WalkToRandomArea extends Task {
 	public boolean verify() {
 		// walk to the area if not attacker or bystander
 		// not in wild
-		return Main.ATTACKER || Main.BYSTANDER && Main.RELOCATE; // and not in
+		return (Main.ATTACKER || Main.BYSTANDER) && Main.RELOCATE && BankCache.getBankCache() != null; // and not in
 																	// wilderness
 	}
 

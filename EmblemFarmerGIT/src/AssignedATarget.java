@@ -1,3 +1,5 @@
+import org.osbot.rs07.api.Chatbox;
+import org.osbot.rs07.api.Chatbox.MessageType;
 import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.model.Player;
@@ -15,7 +17,7 @@ public class AssignedATarget extends Task {
 	@Override
 	public boolean verify() {
 		RS2Widget Target = script.getWidgets().get(90, 37);
-		return (Target != null && !Target.getMessage().equals("None")) && !Main.BYSTANDER && !Main.ATTACKER;
+		return (Target != null && !Target.getMessage().equals("None")) && !Main.BYSTANDER && !Main.ATTACKER && BankCache.getBankCache() != null;
 	}
 
 	@Override
@@ -112,6 +114,10 @@ public class AssignedATarget extends Task {
 				}
 
 			}
+		}
+		
+		if (script.getChatbox().contains(Chatbox.MessageType.GAME, "You can't have another one for 30 minutes.")) {
+			Main.COOLDOWN = true;
 		}
 
 		if (script.myPlayer().isUnderAttack()) {

@@ -16,7 +16,7 @@ public class ATTACKER extends Task {
 	@Override
 	public boolean verify() {
 		// TODO Auto-generated method stub
-		return !Main.RELOCATE && Main.ATTACKER && !Main.BYSTANDER;
+		return !Main.RELOCATE && Main.ATTACKER && !Main.BYSTANDER && BankCache.getBankCache() != null;
 	}
 
 	@Override

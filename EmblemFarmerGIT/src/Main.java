@@ -33,6 +33,7 @@ import java.util.LinkedList;
 @ScriptManifest(author = "aftabdear", name = "EmblemFarmer", version = 1.0, logo = "", info = "")
 public class Main extends Script implements MessageListener {
 	private ArrayList<Task> tasks = new ArrayList<>();
+	public static ArrayList<String> bankItems = new ArrayList<>();
 	public static boolean pauseScript = false;
 	private long startTime;
 	public int rangeLevel;
@@ -41,6 +42,7 @@ public class Main extends Script implements MessageListener {
 	public static boolean ATTACKER = false;
 	public static boolean BYSTANDER = false;
 	public static boolean RELOCATE = false;
+	public static boolean COOLDOWN = false;
 	public static ArrayList<String> verifiedBots = new ArrayList<>();
 	public static LinkedList<String> accounts = new LinkedList<String>();
 	public static Iterator<String> it;
@@ -49,6 +51,18 @@ public class Main extends Script implements MessageListener {
 	public static String relocationArea;
 	private LoginEvent loginEvent;
 	public static HashSet<String> set = new HashSet<>(verifiedBots);
+	public static String tier1 = "Mysterious emblem";
+	public static String tier2 = "Mysterious emblem (tier 2)";
+	public static String tier3 = "Mysterious emblem (tier 3)";
+	public static String tier4 = "Mysterious emblem (tier 4)";
+	public static String tier5 = "Mysterious emblem (tier 5)";
+	public static String tier6 = "Mysterious emblem (tier 6)";
+	public static String tier7 = "Mysterious emblem (tier 7)";
+	public static String tier8 = "Mysterious emblem (tier 8)";
+	public static String tier9 = "Mysterious emblem (tier 8)";
+	public static String tier10 = "Mysterious emblem (tier 10)";
+	
+	
 
 	// tcp socket stuff
 	static Socket s1 = null;
@@ -57,8 +71,8 @@ public class Main extends Script implements MessageListener {
 	BotClientListener clientListener = null;
 
 	public static Integer arrayTiers[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	public static String loginUsername = "micahxbrisk@yahoo.com";
-	public static String loginPassword = "oldschool123";
+	public static String loginUsername = "aftaba1679@googlemail.com";
+	public static String loginPassword = "shahid123";
 
 	@Override
 	public void onStart() throws InterruptedException {
@@ -71,11 +85,18 @@ public class Main extends Script implements MessageListener {
 		IGN = myPlayer().getName().toString();
 		getSettings().getLogoutTab().logOut();
 
-		tasks.add(new WaitingForTarget(this));
-		tasks.add(new AssignedATarget(this));
-		tasks.add(new TargetWidgetIsNotVisible(this));
-		tasks.add(new ATTACKER(this));
-		tasks.add(new WalkToRandomArea(this));
+		
+		 tasks.add(new BankCache(this));
+		 tasks.add(new NeedEmblem(this));
+		 tasks.add(new WaitingForTarget(this));
+		 tasks.add(new AssignedATarget(this));
+		 tasks.add(new TargetWidgetIsNotVisible(this));
+		 tasks.add(new ATTACKER(this));
+		 tasks.add(new BYSTANDER(this));
+		 tasks.add(new WalkToRandomArea(this));
+		 tasks.add(new COOLDOWN(this));
+
+		
 
 		startTime = System.currentTimeMillis();
 
@@ -99,15 +120,20 @@ public class Main extends Script implements MessageListener {
 	@Override
 	public int onLoop() throws InterruptedException { // I think that's it
 
-		for (Task task : tasks) {
-			if (task.verify())
-				try {
-					return task.execute();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
+		
+
+	
+
+			for (Task task : tasks) {
+				if (task.verify())
+					try {
+						return task.execute();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		
 
 		return 150;
 	}
